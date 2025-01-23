@@ -32,7 +32,7 @@ const PatientTable = ({ patients }) => {
         </TableHeader>
         <TableBody>
           {patients.map((patient, index) => (
-            <PatientTableRow key={patient.id} patient={patient} index={index} />
+            <PatientTableRow key={patient.id || index} patient={patient} index={index} />
           ))}
         </TableBody>
       </Table>
@@ -43,15 +43,15 @@ const PatientTable = ({ patients }) => {
 PatientTable.propTypes = {
   patients: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      identification: PropTypes.string.isRequired,
-      phone: PropTypes.string.isRequired,
-      entity: PropTypes.string.isRequired,
-      lastAttention: PropTypes.string.isRequired,
-      attentionType: PropTypes.string.isRequired,
-      status: PropTypes.string.isRequired,
+      id: PropTypes.string,
+      name: PropTypes.string,
+      identification: PropTypes.string,
+      phone: PropTypes.string,
+      entity: PropTypes.string,
+      lastAttention: PropTypes.string,
+      attentionType: PropTypes.string,
+      status: PropTypes.string,
     })
-  ).isRequired,
+  ),
 };
 export default PatientTable;

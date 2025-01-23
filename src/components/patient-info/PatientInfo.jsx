@@ -1,20 +1,18 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import PropTypes from "prop-types";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { Pencil } from "lucide-react";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/hooks/use-toast";
 import { ObservationsCard } from "@/components/patient-info/ObservationsCard";
-import { createObservationUseCase } from "@/core/use-cases/create-observation.use-case";
 
 const PatientInfo = ({ patients, onUpdate, observations }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({ ...patients });
   const [isLoading, setIsLoading] = useState(false);
-  const [observationField, setObservationField] = useState("");
+  // eslint-disable-next-line no-unused-vars
   const [observationsList, setObservationsList] = useState({ ...observations });
 
   const { toast } = useToast();
@@ -52,38 +50,13 @@ const PatientInfo = ({ patients, onUpdate, observations }) => {
     }
   };
 
-  const handleSaveObservation = async () => {
-    setIsLoading(true);
-    try {
-      await createObservationUseCase(formData._id, observationField); // API call
-
-      toast({
-        title: "Observación agregada ✅",
-        description: "La observación se ha agregado correctamente.",
-        status: "success",
-      });
-      setObservationsList((prev) => ({
-        ...prev,
-        observations: [...prev.observations, observationField],
-      }));
-      setObservationField("");
-    } catch (error) {
-      console.error(error);
-      toast({
-        title: "Error ❌",
-        description: "Ocurrió un error al agregar la observación.",
-        status: "error",
-      });
-    } finally {
-      setIsLoading(false);
-      setIsEditing(false);
-    }
-  };
-
   const handleEdit = () => {
     setIsEditing((prev) => !prev);
   };
 
+  const handleCancel = () => {
+    setIsEditing(false);
+  };
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -91,28 +64,38 @@ const PatientInfo = ({ patients, onUpdate, observations }) => {
           Información Paciente
         </CardTitle>
         {isEditing && (
+          <div className="flex items-center gap-2">
+            <Button
+              className="w-[80px] bg-[#4CAF50] hover:bg-[#45a049] text-white"
+              onClick={handleSave}
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Guardando...
+                </>
+              ) : (
+                "Guardar"
+              )}
+            </Button>
+            <Button
+              className="w-[80px] bg-red-600 hover:bg-red-700 text-white"
+              onClick={handleCancel}
+            >
+              Cancelar
+            </Button>
+          </div>
+        )}
+        {!isEditing && (
           <Button
-            className="w-[80px] bg-[#4CAF50] hover:bg-[#45a049] text-white"
-            onClick={handleSave}
+            variant="ghost"
+            size="icon"
+            className="text-gray-500"
+            onClick={handleEdit}
           >
-            {isLoading ? (
-              <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Guardando...
-              </>
-            ) : (
-              "Guardar"
-            )}
+            <Pencil className="h-4 w-4 text-green-600" />
           </Button>
         )}
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-gray-500"
-          onClick={handleEdit}
-        >
-          <Pencil className="h-4 w-4 text-green-600" />
-        </Button>
       </CardHeader>
       <CardContent className="space-y-6">
         <div>
@@ -149,7 +132,6 @@ const PatientInfo = ({ patients, onUpdate, observations }) => {
           </div>
           <div>
             <h2 className="text-[#0A3875] font-medium mb-1">Edad</h2>
-
             {isEditing ? (
               <input
                 name="age"
@@ -162,13 +144,11 @@ const PatientInfo = ({ patients, onUpdate, observations }) => {
             )}
           </div>
         </div>
-
         <div className="grid grid-cols-2 gap-6">
           <div>
             <h2 className="text-[#0A3875] font-medium mb-1">
               Tipo de Indentificación
             </h2>
-
             {isEditing ? (
               <input
                 name="identificationType"
@@ -188,7 +168,6 @@ const PatientInfo = ({ patients, onUpdate, observations }) => {
             <h2 className="text-[#0A3875] font-medium mb-1">
               N° de Identificación
             </h2>
-
             {isEditing ? (
               <input
                 name="identification"
@@ -201,7 +180,6 @@ const PatientInfo = ({ patients, onUpdate, observations }) => {
             )}
           </div>
         </div>
-
         <div className="grid grid-cols-2 gap-6">
           <div>
             <h2 className="text-[#0A3875] font-medium mb-1 flex items-center gap-2">
@@ -220,7 +198,6 @@ const PatientInfo = ({ patients, onUpdate, observations }) => {
           </div>
           <div>
             <h2 className="text-[#0A3875] font-medium mb-1">Teléfono</h2>
-
             {isEditing ? (
               <input
                 name="phone"
@@ -237,7 +214,6 @@ const PatientInfo = ({ patients, onUpdate, observations }) => {
         <div className="grid grid-cols-2 gap-6">
           <div>
             <h2 className="text-[#0A3875] font-medium mb-1">Dirección</h2>
-
             {isEditing ? (
               <input
                 name="address"
@@ -251,7 +227,6 @@ const PatientInfo = ({ patients, onUpdate, observations }) => {
           </div>
           <div>
             <h2 className="text-[#0A3875] font-medium mb-1">Ocupación</h2>
-
             {isEditing ? (
               <input
                 name="occupation"
@@ -264,34 +239,9 @@ const PatientInfo = ({ patients, onUpdate, observations }) => {
             )}
           </div>
         </div>
-
-        <div>
-          <h2 className="text-[#0A3875] font-medium mb-2">
-            Agregar Observación
-          </h2>
-          <Textarea
-            placeholder="Observación"
-            className="min-h-[120px] resize-none"
-            onChange={(e) => setObservationField(e.target.value)}
-          />
-        </div>
-
-        <Button
-          className="w-full bg-[#4CAF50] hover:bg-[#45a049] text-white"
-          onClick={handleSaveObservation}
-        >
-          {isLoading ? (
-            <>
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              Guardando...
-            </>
-          ) : (
-            "Agregar Observación"
-          )}
-        </Button>
         <ObservationsCard
           observations={observationsList.observations}
-          setObservationsList={setObservationsList}
+          formData={formData}
         />
       </CardContent>
       <Toaster />
@@ -300,23 +250,23 @@ const PatientInfo = ({ patients, onUpdate, observations }) => {
 };
 
 PatientInfo.propTypes = {
-  onUpdate: PropTypes.func.isRequired,
+  onUpdate: PropTypes.func,
 
   observations: PropTypes.shape({
-    notes: PropTypes.string.isRequired,
-  }).isRequired,
+    notes: PropTypes.string,
+  }),
 
   patients: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    birthDate: PropTypes.string.isRequired,
-    age: PropTypes.number.isRequired,
-    identificationType: PropTypes.string.isRequired,
-    identification: PropTypes.string.isRequired,
-    cellPhone: PropTypes.string.isRequired,
-    phone: PropTypes.string.isRequired,
-    address: PropTypes.string.isRequired,
-    occupation: PropTypes.string.isRequired,
-  }).isRequired,
+    name: PropTypes.string,
+    birthDate: PropTypes.string,
+    age: PropTypes.number,
+    identificationType: PropTypes.string,
+    identification: PropTypes.string,
+    cellPhone: PropTypes.string,
+    phone: PropTypes.string,
+    address: PropTypes.string,
+    occupation: PropTypes.string,
+  }),
 };
 
 export default PatientInfo;

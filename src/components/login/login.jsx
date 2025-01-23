@@ -7,26 +7,28 @@ import { LoginUseCase } from "@/core/use-cases/login.use-case";
 
 const MedicalLogin = () => {
   const navigate = useNavigate();
+  const [loginError, setLoginError] = useState(false);
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  const handleSubmit =  async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    const loginData = await LoginUseCase(formData.email, formData.password);
+    try {
+      const loginData = await LoginUseCase(formData.email, formData.password);
 
-    if (loginData.success === false) {
-      alert(loginData.message);
-      return;
+      if (!loginData.success) {
+        throw new Error("Error en la petición");
+      }
+      localStorage.setItem("x-token", loginData.token);
+      //document.cookie = `x-token=${loginData.token}; path=/`;
+      navigate("/directory");
+    } catch (error) {
+      setLoginError(true);
+      console.log(error);
     }
-
-    document.cookie = `x-token=${loginData.token}; path=/`;
-    localStorage.setItem("x-token", loginData.token);
-
-    navigate("/directory");
   };
 
   return (
@@ -45,10 +47,10 @@ const MedicalLogin = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <form  onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
                 <label htmlFor="email" className="text-sm font-medium">
-                  Email Address
+                  Email
                 </label>
                 <Input
                   id="email"
@@ -82,6 +84,11 @@ const MedicalLogin = () => {
               >
                 Ingresar
               </Button>
+              {loginError && (
+                <p className="text-red-500 text-center mt-4">
+                  Error al iniciar sesión. Por favor, verifica tus credenciales.
+                </p>
+              )}
             </form>
           </CardContent>
         </Card>
