@@ -1,5 +1,5 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import { LoginPage } from "@/pages/loginPage";
+import { LoginPage } from "@/pages/LoginPage";
 import { PatientDirectoryPage } from "@/pages/PatientDirectoryPage";
 import PropTypes from "prop-types";
 
