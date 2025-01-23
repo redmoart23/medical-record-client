@@ -1,10 +1,20 @@
-import PatientTable from "@/components/patients-table/PatientTable";
+//* React imports
 import { useEffect, useState } from "react";
-import { GetPatientsUseCase } from "@/core/use-cases/get-patients.use-case";
-import { Button } from "@/components/ui/button";
-import { LogOutIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+
+//* Styles imports
+import { Button } from "@/components/ui/button";
+
+//* Icons imports
+import { LogOutIcon } from "lucide-react";
+
+//* Components imports
+import PatientTable from "@/components/patients-table/PatientTable";
+
+//* Use cases imports
+import { GetPatientsUseCase } from "@/core/use-cases/get-patients.use-case";
+
 
 const PatientDirectory = () => {
   const navigate = useNavigate();

@@ -1,13 +1,21 @@
-import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
-import PropTypes from "prop-types";
-import { Textarea } from "@/components/ui/textarea";
-import { createObservationUseCase } from "@/core/use-cases/create-observation.use-case";
-import { deleteObservationUseCase } from "@/core/use-cases/delete-observation.use-case";
+// * React imports
 import { useState } from "react";
+import PropTypes from "prop-types";
+
+//* Style imports
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/hooks/use-toast";
+
+//* Icons imports
+import { Trash2 } from "lucide-react";
 import { Loader2 } from "lucide-react";
+
+//* Use cases imports
+import { createObservationUseCase } from "@/core/use-cases/create-observation.use-case";
+import { deleteObservationUseCase } from "@/core/use-cases/delete-observation.use-case";
+
 export const ObservationsCard = ({ observations, formData }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [observationField, setObservationField] = useState("");

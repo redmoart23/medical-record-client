@@ -1,3 +1,7 @@
+//* React imports
+import PropTypes from "prop-types";
+
+//* Styles imports
 import {
   Table,
   TableBody,
@@ -5,7 +9,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import PropTypes from "prop-types";
+
+//* Components imports
 import { PatientTableRow } from "@/components/patients-table/PatientTableRow";
 
 const PatientTable = ({ patients }) => {
@@ -32,7 +37,11 @@ const PatientTable = ({ patients }) => {
         </TableHeader>
         <TableBody>
           {patients.map((patient, index) => (
-            <PatientTableRow key={patient.id || index} patient={patient} index={index} />
+            <PatientTableRow
+              key={patient.id || index}
+              patient={patient}
+              index={index}
+            />
           ))}
         </TableBody>
       </Table>

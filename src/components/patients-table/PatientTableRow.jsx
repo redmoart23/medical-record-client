@@ -1,16 +1,21 @@
 /* eslint-disable react/prop-types */
-import { TableCell, TableRow } from "@/components/ui/table";
-import { StatusBadge } from "@/components/patients-table/StatusBadge";
+//* React imports
 import PropTypes from "prop-types";
-import { GetPatientUseCase } from "@/core/use-cases/get-patient.use-case";
-import { useState } from "react";
-import PatientInfo from "@/components/patient-info/PatientInfo";
+import { useEffect, useState } from "react";
+
+//* Styles imports
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
+import { TableCell, TableRow } from "@/components/ui/table";
+import { DialogTitle, DialogDescription } from "@/components/ui/dialog";
+
+//* Components imports
+import { StatusBadge } from "@/components/patients-table/StatusBadge";
+import PatientInfo from "@/components/patient-info/PatientInfo";
+
+//* Use cases imports
+import { GetPatientUseCase } from "@/core/use-cases/get-patient.use-case";
 import { UpdatePatientUseCase } from "@/core/use-cases/update-patient.use-case";
 import { getObservationsUseCase } from "@/core/use-cases/get-observations.use-case";
-import { useEffect } from "react";
-
-import { DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 export const PatientTableRow = ({ patient, index }) => {
   const [showModal, setShowModal] = useState(false);

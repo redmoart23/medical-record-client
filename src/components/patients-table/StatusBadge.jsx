@@ -1,5 +1,8 @@
-import { Badge } from "@/components/ui/badge";
+//* React imports
 import PropTypes from "prop-types";
+
+//* Styles imports
+import { Badge } from "@/components/ui/badge";
 
 export const StatusBadge = ({ status }) => {
   const styles = {

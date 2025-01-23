@@ -1,8 +1,13 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+//* React imports
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+//* Style imports
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+//* Use case imports
 import { LoginUseCase } from "@/core/use-cases/login.use-case";
 
 const MedicalLogin = () => {

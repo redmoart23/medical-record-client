@@ -1,12 +1,19 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import PropTypes from "prop-types";
-import { Button } from "@/components/ui/button";
-import { Pencil } from "lucide-react";
+// * React imports
 import { useState } from "react";
-import { Loader2 } from "lucide-react";
+import PropTypes from "prop-types";
+
+//* Style imports
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/toaster";
-import { useToast } from "@/hooks/use-toast";
+
+//* Icons imports
+import { Loader2 } from "lucide-react";
+import { Pencil } from "lucide-react";
+
+//* Use cases imports
 import { ObservationsCard } from "@/components/patient-info/ObservationsCard";
+import { useToast } from "@/hooks/use-toast";
 
 const PatientInfo = ({ patients, onUpdate, observations }) => {
   const [isEditing, setIsEditing] = useState(false);
