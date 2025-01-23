@@ -78,13 +78,12 @@ export const PatientTableRow = ({ patient, index }) => {
           {patient._id.slice(patient._id.length - 6, patient._id.length)}
         </TableCell>
         <TableCell>
-          <a
-            href="#"
-            className="text-[#4CAF50] hover:text-[#388E3C] hover:underline"
+          <span
+            className="text-[#4CAF50] hover:text-[#388E3C] hover:underline cursor-pointer"
             onClick={handleClick}
           >
             {patient.name}
-          </a>
+          </span>
         </TableCell>
         <TableCell>
           {patient.identificationType} - {patient.identification}
