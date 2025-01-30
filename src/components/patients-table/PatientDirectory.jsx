@@ -1,8 +1,3 @@
-//* React imports
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
-
 //* Styles imports
 import { Button } from "@/components/ui/button";
 
@@ -12,29 +7,11 @@ import { LogOutIcon } from "lucide-react";
 //* Components imports
 import PatientTable from "@/components/patients-table/PatientTable";
 
-//* Use cases imports
-import { GetPatientsUseCase } from "@/core/use-cases/get-patients.use-case";
-
+//* Hooks imports
+import { useFetchPatients } from "@/hooks/patients-table/useFetchPatients";
 
 const PatientDirectory = () => {
-  const navigate = useNavigate();
-  const [patients, setPatients] = useState([]);
-
-  const doctorName = jwtDecode(localStorage.getItem("x-token")).name;
-  useEffect(() => {
-    const fetchtPatients = async () => {
-      const patients = await GetPatientsUseCase();
-      setPatients(patients.patients);
-    };
-
-    fetchtPatients();
-  }, []);
-
-  const logout = () => {
-    console.log("logout clicked");
-    localStorage.clear();
-    navigate("/");
-  };
+  const { patients, logout, doctorName } = useFetchPatients();
 
   return (
     <div className="p-6">
@@ -49,7 +26,7 @@ const PatientDirectory = () => {
             variant="outline"
             className="hover:bg-slate-300"
           >
-            <LogOutIcon /> Salir 
+            <LogOutIcon /> Salir
           </Button>
         </div>
       </div>

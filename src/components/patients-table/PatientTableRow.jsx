@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 //* React imports
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
 
 //* Styles imports
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
@@ -12,47 +11,18 @@ import { DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { StatusBadge } from "@/components/patients-table/StatusBadge";
 import PatientInfo from "@/components/patient-info/PatientInfo";
 
-//* Use cases imports
-import { GetPatientUseCase } from "@/core/use-cases/get-patient.use-case";
-import { UpdatePatientUseCase } from "@/core/use-cases/update-patient.use-case";
-import { getObservationsUseCase } from "@/core/use-cases/get-observations.use-case";
+//* Hooks imports
+import { useHandleTableRow } from "@/hooks/patients-table/useHandleTableRow";
 
 export const PatientTableRow = ({ patient, index }) => {
-  const [showModal, setShowModal] = useState(false);
-  const [patientData, setPatientData] = useState([]);
-  const [observations, setObservations] = useState([]);
-
-  useEffect(() => {
-    const fetchObservations = async () => {
-      const observations = await getObservationsUseCase(patient._id);
-      setObservations(observations);
-    };
-    fetchObservations();
-  }, [patient._id]);
-
-  const handleUpdatePatient = async (updatedPatient) => {
-    const response = await UpdatePatientUseCase(
-      updatedPatient._id,
-      updatedPatient
-    );
-
-    if (response) {
-      console.log(response);
-      setPatientData(response.updatedPatient);
-    }
-  };
-
-  const handleClick = async () => {
-    const patientId = patient._id;
-    const patientData = await GetPatientUseCase(patientId);
-
-    if (!patientData) {
-      return;
-    }
-    setShowModal(true);
-    setPatientData(patientData.patient);
-    return;
-  };
+  const {
+    showModal,
+    setShowModal,
+    patientData,
+    observations,
+    handleClick,
+    handleUpdatePatient,
+  } = useHandleTableRow(patient);
 
   return (
     <>

@@ -1,5 +1,4 @@
 // * React imports
-import { useState } from "react";
 import PropTypes from "prop-types";
 
 //* Style imports
@@ -13,57 +12,22 @@ import { Pencil } from "lucide-react";
 
 //* Use cases imports
 import { ObservationsCard } from "@/components/patient-info/ObservationsCard";
-import { useToast } from "@/hooks/use-toast";
+
+//* Hooks imports
+import { useHandlePatientInfo } from "@/hooks/patient-info/useHandlePatientInfo";
 
 const PatientInfo = ({ patients, onUpdate, observations }) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState({ ...patients });
-  const [isLoading, setIsLoading] = useState(false);
-  // eslint-disable-next-line no-unused-vars
-  const [observationsList, setObservationsList] = useState({ ...observations });
+  const {
+    isEditing,
+    formData,
+    isLoading,
+    observationsList,
+    handleChange,
+    handleSave,
+    handleEdit,
+    handleCancel,
+  } = useHandlePatientInfo(patients, onUpdate, observations);
 
-  const { toast } = useToast();
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSave = () => {
-    setIsLoading(true);
-    try {
-      onUpdate(formData);
-
-      toast({
-        title: "Paciente actualizado ✅",
-        description:
-          "La información del paciente se ha actualizado correctamente.",
-        status: "success",
-      });
-    } catch (error) {
-      console.error(error);
-      toast({
-        title: "Error ❌",
-        description:
-          "Ocurrió un error al actualizar la información del paciente.",
-        status: "error",
-      });
-    } finally {
-      setIsLoading(false);
-      setIsEditing(false);
-    }
-  };
-
-  const handleEdit = () => {
-    setIsEditing((prev) => !prev);
-  };
-
-  const handleCancel = () => {
-    setIsEditing(false);
-  };
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -249,6 +213,7 @@ const PatientInfo = ({ patients, onUpdate, observations }) => {
         <ObservationsCard
           observations={observationsList.observations}
           formData={formData}
+          //setObservationsList={setObservationsList}
         />
       </CardContent>
       <Toaster />

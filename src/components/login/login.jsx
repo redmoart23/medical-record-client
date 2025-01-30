@@ -1,40 +1,12 @@
-//* React imports
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
 //* Style imports
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-//* Use case imports
-import { LoginUseCase } from "@/core/use-cases/login.use-case";
-
+//* Hooks imports
+import { useLogin } from "@/hooks/login/useLogin";
 const MedicalLogin = () => {
-  const navigate = useNavigate();
-  const [loginError, setLoginError] = useState(false);
-
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const loginData = await LoginUseCase(formData.email, formData.password);
-
-      if (!loginData.success) {
-        throw new Error("Error en la petición");
-      }
-      localStorage.setItem("x-token", loginData.token);
-      //document.cookie = `x-token=${loginData.token}; path=/`;
-      navigate("/directory");
-    } catch (error) {
-      setLoginError(true);
-      console.log(error);
-    }
-  };
+  const { handleSubmit, formData, setFormData, loginError } = useLogin();
 
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
